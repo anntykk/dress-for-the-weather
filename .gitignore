@@ -1,0 +1,8 @@
+# Secrets file
+secrets.json
+
+# Project file
+.spyproject/
+
+# Temporary files
+_temp
