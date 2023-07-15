@@ -1,3 +1,14 @@
+#!/usr/bin/env python3
+# =============================================================================
+# @file    xx.py
+# @brief   xx
+# @author  x x <x@x.x>
+# @license xx
+# @website xx
+#
+# Note: xxx
+# =============================================================================
+
 ##############################################################################
 ###   IMPORT LIBRARIES   #####################################################
 import json
@@ -9,6 +20,7 @@ from flask import Flask, render_template
 
 ##############################################################################
 ###   FETCH SECRETS   ########################################################
+#TODO: put in utility module
 def GetValueFromJson(json_file, key):
    try:
        with open(json_file) as f:
@@ -21,20 +33,24 @@ def GetValueFromJson(json_file, key):
 ##############################################################################
 ###   FETCH DATA   ###########################################################
 def FetchData(url_name):
+# TODO: Use environment variables instead
     sitename = GetValueFromJson("secrets.json", "SITENAME")
     user_agent = {'User-agent': sitename} # Generate user-agent object (which is required by the api service)
     
     page = requests.get(url_name, headers = user_agent)
 
+#TODO: Create exeptions for != 200 response to show users
     if page.status_code != 200:
         print("Could not download url " + str(page.status_code))
-    else: pass
+#        raise APIException('API did not respond')
+#    else: pass
 
     result = BeautifulSoup(page.text, "html.parser")
 
     return json.loads(result.text)
 
 def GetWeatherDataFromSource():
+# TODO: Move api urls to settings file
     url_base = "https://api.met.no"
     url_parameters = "/weatherapi/locationforecast/2.0/compact?"
     url_lat = "lat=57"
@@ -46,6 +62,7 @@ def GetWeatherDataFromSource():
 # TODO: Write test to verify result is the dictionary expected, and that there are no missing values
 
 def GetWeatherSymbolsFromSource():
+# TODO: Move api urls to settings file
     weather_symbol_url = 'https://api.met.no/weatherapi/weathericon/2.0/legends'
 
     return FetchData(weather_symbol_url)
@@ -56,12 +73,14 @@ def GetWeatherSymbolsFromSource():
 # TODO: Improve this code
 def GetWeatherNextHour(dictionary):
     now = datetime.now()
+#TODO: Create utility function 
     next_hour = (now + timedelta(hours=1)).strftime("%Y-%m-%dT%H")
     
     WeatherNextHour = []
-    
+
+#TODO: Maybe look at the order only? Instead of looping through all rows..    
     for row in dictionary[:]:
-        date_time = str(row['time'][:13])
+        date_time = str(row['time'][:13]) #TODO: Create a python date object and call eg date.gethour
         if date_time == str(next_hour):
             WeatherNextHour.append(row)
         else: 
@@ -70,7 +89,7 @@ def GetWeatherNextHour(dictionary):
     return WeatherNextHour
             
 def CreateApiWeatherNextHour(list):
-    dict = {'date' : str(list[0]['time'][:10]),
+    dict = {'date' : str(list[0]['time'][:10]), # TODO: Create a python date object and call eg date.gethour
             'time' : str(list[0]['time'][11:13]),
             'air_temperature' : float(list[0]['data']['instant']['details']['air_temperature']),
             'symbol_code' : str(list[0]['data']['next_1_hours']['summary']['symbol_code']),
@@ -84,6 +103,7 @@ def CreateApiWeatherNextHour(list):
 ##############################################################################
 ###   CREATE FUNCTIONS FOR CLOTHES  ##########################################
 
+#TODO: Put this in to a table structure instead
 def ClothesSuggestionByTemperaturePrecipitation(air_temperature, precipitation_amount):
     if -20 <= air_temperature < -10:
         return 'winter overall, wool or fleece layer, warm hat och warm gloves'
@@ -111,7 +131,6 @@ def ClothesSuggestionByTemperaturePrecipitation(air_temperature, precipitation_a
 # TODO: Implement test
 
 
-
 ##############################################################################
 ###   CREATE APP  ############################################################
 
@@ -119,19 +138,23 @@ app = Flask(__name__)
 
 @app.route('/nexthour')
 def main():
+#TODO: Implement exception messages for status != 200 here
+#    try:
     weather_dict_data = GetWeatherDataFromSource()
+#    except APIException as e:
+#        return render_template('error.html', reason = str(e);         
     weather_symbol_dict = GetWeatherSymbolsFromSource()
     WeatherNextHour = GetWeatherNextHour(weather_dict_data)
     ApiWeatherNextHour = CreateApiWeatherNextHour(WeatherNextHour)
 
     ApiWeatherNextHour['clothes'] = ClothesSuggestionByTemperaturePrecipitation(ApiWeatherNextHour['air_temperature'], ApiWeatherNextHour['precipitation_amount'])
+#TODO: Look up map function 
     for key, value in weather_symbol_dict.items():
         if key == ApiWeatherNextHour['symbol_code'].split('_')[0]:
             ApiWeatherNextHour['symbol_text'] = value['desc_en'].lower()
         else:
             pass
 
-    
     return render_template('index.html', 
                            date = ApiWeatherNextHour['date'],
                            time = ApiWeatherNextHour['time'],
@@ -142,13 +165,4 @@ def main():
                            clothes = ApiWeatherNextHour['clothes'])
 
 if __name__ == '__main__':
-    app.run()
-
-
-
-
-
-
-
-
-
+    app.run(host="0.0.0.0", port=5000)
