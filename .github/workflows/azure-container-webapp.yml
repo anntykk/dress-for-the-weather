@@ -1,44 +1,44 @@
 # This workflow will build and push a Docker container to an Azure Web App when a commit is pushed to your default branch.
 # For more information see: https://github.com/marketplace/actions/azure-webapp
 
-name: Build and deploy a container to an Azure Web App
+# name: Build and deploy a container to an Azure Web App
 
-env:
-  AZURE_WEBAPP_NAME: dress-for-the-weather 
-  REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
+# env:
+#   AZURE_WEBAPP_NAME: dress-for-the-weather 
+#   REGISTRY: ghcr.io
+#   IMAGE_NAME: ${{ github.repository }}
 
-on:
-  push:
-    branches: [ "main" ]
-  workflow_dispatch:
+# on:
+#   push:
+#     branches: [ "main" ]
+#   workflow_dispatch:
 
-permissions:
-  contents: read
+# permissions:
+#   contents: read
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/checkout@v3
+#     steps:
+#       - uses: actions/checkout@v3
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
+#       - name: Set up Docker Buildx
+#         uses: docker/setup-buildx-action@v1
 
-      - name: Log in to GitHub container registry
-        uses: docker/login-action@v1.10.0
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ github.token }}
+#       - name: Log in to GitHub container registry
+#         uses: docker/login-action@v1.10.0
+#         with:
+#           registry: ghcr.io
+#           username: ${{ github.actor }}
+#           password: ${{ github.token }}
 
-      - name: Build and push container image to registry
-        uses: docker/build-push-action@v2
-        with:
-          push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
-          file: ./Dockerfile
+#       - name: Build and push container image to registry
+#         uses: docker/build-push-action@v2
+#         with:
+#           push: true
+#           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+#           file: ./Dockerfile
 
   # deploy:
   #   permissions:
