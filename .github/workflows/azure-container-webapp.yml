@@ -1,5 +1,5 @@
 # This workflow will build and push a Docker container to an Azure Web App when a commit is pushed to your default branch.
-# For more information see: https://github.com/anntykk/dress-for-the-weather/new/main?filename=.github%2Fworkflows%2Fazure-container-webapp.yml&workflow_template=deployments%2Fazure-container-webapp
+# For more information see: https://github.com/marketplace/actions/azure-webapp
 
 name: Build and deploy a container to an Azure Web App
 
