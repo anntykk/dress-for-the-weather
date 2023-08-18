@@ -12,8 +12,5 @@ COPY . .
 # Install requirements
 RUN pip install -r requirements.txt
 
-# Make port 5000 available to the world outside the container
-EXPOSE 5000
-
 # Instruct Docker to run app
-CMD ["python", "app.py"]
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "app:app"]
