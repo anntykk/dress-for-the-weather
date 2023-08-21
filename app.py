@@ -21,8 +21,7 @@ from flask import Flask, render_template
 ##############################################################################
 ###   FETCH DATA   ###########################################################
 def FetchData(url_name):
-    sitename = os.environ.get('SITENAME')
-    user_agent = {'User-agent': sitename} # Generate user-agent object (which is required by the api service)
+    user_agent = {'User-agent': os.environ['SITENAME']} # Generate user-agent object (which is required by the api service)
     
     page = requests.get(url_name, headers = user_agent)
 
