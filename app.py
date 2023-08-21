@@ -11,30 +11,17 @@
 
 ##############################################################################
 ###   IMPORT LIBRARIES   #####################################################
+import os
 import json
 from datetime import datetime, timedelta
 import requests
 from bs4 import BeautifulSoup
 from flask import Flask, render_template
 
-
-##############################################################################
-###   FETCH SECRETS   ########################################################
-#TODO: put in utility module
-def GetValueFromJson(json_file, key):
-   try:
-       with open(json_file) as f:
-           data = json.load(f)
-           return data[key]
-   except Exception as e:
-       print("Error: ", e)
-
-
 ##############################################################################
 ###   FETCH DATA   ###########################################################
 def FetchData(url_name):
-# TODO: Use environment variables instead
-    sitename = GetValueFromJson("secrets.json", "SITENAME")
+    sitename = os.environ.get('SITENAME')
     user_agent = {'User-agent': sitename} # Generate user-agent object (which is required by the api service)
     
     page = requests.get(url_name, headers = user_agent)
