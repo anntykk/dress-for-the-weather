@@ -12,7 +12,7 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
-  SITENAME: ${{ secrets.SITENAME }} # Used in app.py
+  SITENAME: ${{ secrets.MY_APP_SITENAME }} # Used in app.py
   AZURE_WEBAPP_NAME: dress-for-the-weather # Set to web applications name
 
 # Set up job
