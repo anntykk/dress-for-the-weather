@@ -12,7 +12,7 @@ COPY . .
 # Install requirements
 RUN pip install -r requirements.txt
 
-# expose port 8000
+# Expose port
 EXPOSE 5000
 
 # Instruct Docker to run app
