@@ -1,6 +1,21 @@
 body {
-  margin: 0;
-  padding: 0;
+  padding: 30px;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  color: #444;
+  color: #070e06;
+}
+h1 {
+  color: rgb(255, 0, 174);
+}
+p {
+  color: rgb(255, 0, 174);
+}
+div {
+  color: white;
+  font-size: 20px;
+  border-radius: 60px;
+  background: rgb(255, 0, 174);
+  padding: 10px; 
+  font-weight: bold;
+  margin-top:20px;
+  text-transform: uppercase;
 }

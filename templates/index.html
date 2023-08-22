@@ -5,10 +5,10 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
     </head>
     <body>
-        <h1>Next hour</h1>
-        <p>Today {{ date }} at {{ time }} it will be {{ air_temperature }} degrees. 
-        The forecast predicts {{ symbol_text }}, {{ precipitation_amount }} of precipitation and a wind speed of {{ wind_speed }} m/s.
-        The suggestion is therefore to put {{ clothes }} on the children.
-        </p>
+        <h1>Get dressed for the weather!</h1>
+        <p>Today {{ date }} at {{ time }} it will be {{ air_temperature }} degrees.</p>
+        <p> The forecast predicts {{ symbol_text }}, {{ precipitation_amount }} of precipitation and a wind speed of {{ wind_speed }} m/s.</p>
+        <p>Suggested clothing is therefore:</p>
+        <div>{{ clothes }}</div>
    </body>
 </html>  
