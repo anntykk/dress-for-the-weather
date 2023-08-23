@@ -6,3 +6,6 @@ secrets.json
 
 # Temporary files
 _temp
+
+# Pychache
+__pycache__/
